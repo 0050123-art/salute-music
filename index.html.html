@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>국기에 대한 경례</title>
+    <!-- 스마트폰 홈 화면 추가 시 앱처럼 보이게 설정 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f6f9;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        .play-btn {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background-color: #d32f2f;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            border: none;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.1s, background-color 0.2s;
+        }
+        .play-btn:active {
+            transform: scale(0.95);
+            background-color: #b71c1c;
+        }
+        .desc {
+            margin-top: 24px;
+            font-size: 16px;
+            color: #333;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <button class="play-btn" onclick="playMusic()">
+        <span style="font-size: 36px; margin-bottom: 8px;">🇰🇷</span>
+        국기에 대한 경례
+    </button>
+    <div class="desc" id="status">터치하여 재생</div>
+    <!-- 실제 음원 파일명으로 수정하세요 -->
+    <audio id="audioPlayer" src="./국기경례나는자랑스런.mp3"></audio>
+    <script>
+        const audio = document.getElementById('audioPlayer');
+        const statusText = document.getElementById('status');
+        function playMusic() {
+            if (audio.paused) {
+                audio.currentTime = 0; // 누를 때마다 처음부터 재생
+                audio.play().then(() => {
+                    statusText.textContent = "재생 중...";
+                }).catch(error => {
+                    statusText.textContent = "재생 실패 (브라우저 설정을 확인하세요)";
+                });
+            } else {
+                audio.pause();
+                statusText.textContent = "일시정지됨";
+            }
+        }
+        audio.onended = function() {
+            statusText.textContent = "터치하여 재생";
+        };
+    </script>
+</body>
+</html>
