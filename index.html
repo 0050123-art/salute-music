@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>국기에 대한 경례</title>
+    <!-- PWA 및 모바일 풀스크린 설정 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#f4f6f9">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f6f9;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            user-select: none;
+        }
+        .play-btn {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background-color: #d32f2f;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            border: none;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .desc {
+            margin-top: 24px;
+            font-size: 16px;
+            color: #333;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <button class="play-btn" onclick="playMusic()">
+        <span style="font-size: 36px; margin-bottom: 8px;">🇰🇷</span>
+        국기에 대한 경례
+    </button>
+    <div class="desc" id="status">재생 준비 중...</div>
+
+    <audio id="audioPlayer" src="국기경례나는자랑스런.mp3" preload="auto"></audio>
+
+    <script>
+        const audio = document.getElementById('audioPlayer');
+        const statusText = document.getElementById('status');
+
+        function playMusic() {
+            audio.currentTime = 0;
+            audio.play().then(() => {
+                statusText.textContent = "재생 중...";
+            }).catch(err => {
+                statusText.textContent = "터치하여 재생";
+            });
+        }
+
+        // 앱/웹 접속 즉시 재생 시도
+        window.addEventListener('load', () => {
+            audio.play().then(() => {
+                statusText.textContent = "재생 중...";
+            }).catch(() => {
+                // 자동 재생이 차단된 경우, 화면 어디든 첫 터치 시 즉시 재생
+                statusText.textContent = "화면을 아무 데나 터치하세요";
+                const startAudio = () => {
+                    audio.play();
+                    statusText.textContent = "재생 중...";
+                    window.removeEventListener('touchstart', startAudio);
+                    window.removeEventListener('click', startAudio);
+                };
+                window.addEventListener('touchstart', startAudio);
+                window.addEventListener('click', startAudio);
+            });
+        });
+
+        audio.onended = function() {
+            statusText.textContent = "재생 완료";
+        };
+    </script>
+</body>
+</html>
